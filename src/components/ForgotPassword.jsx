@@ -1,7 +1,7 @@
 import '../styles/forgotPassword.css';
 import logo from '../images/logo.jpg';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { use, useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function ForgotPassword() {
   const [username, setUsername] = useState('');
@@ -9,6 +9,16 @@ export default function ForgotPassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [user_id, setUser_id] = useState('');
+  const location = useLocation();
+  const user = location.state?.user || '';
+  
+  
+    useEffect(() => {
+      if (user) {
+        setUser_id(user.user_id);
+      }
+    }, [user]);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -31,12 +41,12 @@ export default function ForgotPassword() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/resetPassword', {
+      const response = await fetch('http://localhost:5000/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, newPassword }),
+        body: JSON.stringify({ username, newPassword, user_id }),
       });
 
       const data = await response.json();

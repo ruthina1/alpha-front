@@ -27,7 +27,7 @@ export default function MidFinal() {
     setError("");
 
     try {
-      const response = await fetch('http://localhost:5000/registerExamSelection', {
+      const response = await fetch('http://localhost:5000/questions/fetch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

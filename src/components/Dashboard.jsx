@@ -4,22 +4,35 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import { useLocation } from 'react-router-dom';
 
 export default function Dashboard() {
   const [progressData, setProgressData] = useState({});
   const [finalProgressData, setFinalProgressData] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user_id, setUser_id] = useState('');
+  const location = useLocation();
+  const user = location.state?.user || '';
+  
+
+
+  useEffect(() => {
+    if (user) {
+      setUser_id(user.user_id);
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const responseMid = await fetch('http://localhost:5000/api/progress/mid');
+        const responseMid = await fetch(`http://localhost:5000/dashboard/${user_id}`);
         const midData = await responseMid.json();
-        setProgressData(midData);
+        setProgressData(midData.Mid);
+        setFinalProgressData(midData.Final);
 
-        const responseFinal = await fetch('http://localhost:5000/api/progress/final');
-        const finalData = await responseFinal.json();
-        setFinalProgressData(finalData);
+        // const responseFinal = await fetch('http://localhost:5000/api/progress/final');
+        // const finalData = await responseFinal.json();
+        // setFinalProgressData(finalData);
       } catch (error) {
         console.error('Error fetching progress:', error);
       }

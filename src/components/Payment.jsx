@@ -75,7 +75,7 @@ export default function Registration() {
       formData.append('selectedSemesters', JSON.stringify(selectedSemesters));
       formData.append('screenshot', uploadedFile);
 
-      const response = await fetch('http://localhost:5000/', {
+      const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         body: formData,
       });
