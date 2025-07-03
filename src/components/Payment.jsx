@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Registration() {
-  const [username, setUsername] = useState('');
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState(false);
@@ -17,7 +17,7 @@ export default function Registration() {
   const fileInputRef = useRef(null);
 
   const isFormValid =
-    username.trim() !== '' &&
+    email.trim() !== '' &&
     password.trim().length >= 6 &&
     confirm.trim().length >= 6 &&
     password === confirm &&
@@ -44,12 +44,12 @@ export default function Registration() {
 
   useEffect(() => {
     if (user) {
-      setUsername(user.username);
+      setemail(user.email);
     }
   }, [user]);
 
   const handleSignUp = async () => {
-    if (!username || !password || !confirm || !uploadedFile) {
+    if (!email || !password || !confirm || !uploadedFile) {
       setError(true);
       setErrorMessage('Please fill all fields and upload the screenshot.');
       navigate('/Thankyou');
@@ -70,7 +70,7 @@ export default function Registration() {
 
     try {
       const formData = new FormData();
-      formData.append('username', username);
+      formData.append('email', email);
       formData.append('password', password);
       formData.append('selectedSemesters', JSON.stringify(selectedSemesters));
       formData.append('screenshot', uploadedFile);
@@ -84,9 +84,10 @@ export default function Registration() {
 
       if (response.ok) {
         alert('Registration successful!');
+        navigate("/Universities", { state: { userId: result.userId } });
       } else {
         setError(true);
-        setErrorMessage(result.message || 'Registration failed.');
+        setErrorMessage(result.error || 'Registration failed.');
       }
     } catch (err) {
       setError(true);
@@ -106,14 +107,14 @@ export default function Registration() {
               <div className="row">
                 <input
                   type="text"
-                  id="username"
-                  name="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
                   className={`txt ${error ? 'error-border' : ''}`}
                   placeholder=""
                 />
-                <label htmlFor="username">Username</label>
+                <label htmlFor="email">email</label>
               </div>
 
               <br />

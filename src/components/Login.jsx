@@ -4,7 +4,7 @@ import { useState,useEffect } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 
 export default function Login(){
-  const [username, setUsername] = useState('');
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function Login(){
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -32,7 +32,7 @@ export default function Login(){
          navigate('/Thankyou');
       }
     else if (data.invalid) {
-         navigate('/Registration', {
+         navigate('/Payment', {
          state: {
          user: data.user
          }
@@ -58,15 +58,15 @@ export default function Login(){
                 <div className='row'>
                     <input 
                         type="text" 
-                        name="username" 
-                        id="username" 
+                        name="email" 
+                        id="email" 
                         className={`txt ${error ? 'error-border' : ''}`}
                         placeholder=''
-                        value={username}
-                        onChange={(e)=>setUsername(e.target.value)}
+                        value={email}
+                        onChange={(e)=>setemail(e.target.value)}
                     />
 
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="email">email</label>
                 </div>
                 
 
@@ -83,7 +83,7 @@ export default function Login(){
                          value={password}
                          onChange={(e)=>setPassword(e.target.value)} 
                      />
-                     <label htmlFor="username">Password</label>
+                     <label htmlFor="email">Password</label>
                 </div>
                
                 <br />
@@ -101,7 +101,7 @@ export default function Login(){
           
         {error && (
           <p style={{ color: 'red', marginTop: '10px' }}>
-            Username or password is incorrect.
+            email or password is incorrect.
           </p>
         )}
 
